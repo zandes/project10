@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+Update:<br>
+<form id="theMovie">
+    <div>Genre:<input type="text" name="genre" id="genre"></div>
+    <div>Rating:<input type="text" name="rating" id="rating"></div>
+    <div>
+        <button type="button" id="updateMovie">Update Movie</button>
+    </div>
+</form>
+<script>
+    $( "#updateMovie" ).on("click" ,function( event ) {
+
+        var finishedMessage="{";
+        var message = $( "#theMovie" ).serializeArray();
+        $.each(message,function (i,field) {
+            finishedMessage+="\"" + field.name + "\":\"" + field.value + "\",";
+
+        });
+        finishedMessage =finishedMessage.substring(0,finishedMessage.length - 1) + "}";
+
+        var oReq = new XMLHttpRequest();
+        oReq.open("PUT", "/movies/"+ $( "#genre" ).val());
+        oReq.setRequestHeader("Content-Type", "application/json");
+        oReq.send(finishedMessage);
+        console.log(finishedMessage);
+    });
+</script>
+Delete:<br>
+<form id="dMovie">
+    <div>Genre:<input type="text" name="genre" id="dGenre"></div>
+    <div>
+        <button type="button" id="deleteMovie">Delete Movie</button>
+    </div>
+</form>
+<script>
+    $( "#deleteMovie" ).on("click" ,function( event ) {
+        var name = $( "#dGenre" ).val();
+        var oReq = new XMLHttpRequest();
+        oReq.open("DELETE", "/movies/"+ name);
+        oReq.setRequestHeader("Content-Type", "application/json");
+        oReq.send();
+    });
+</script>
+</body>
+</html>

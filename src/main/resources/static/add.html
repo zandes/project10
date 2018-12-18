@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<form id="theMovie">
+    <div>Genre:<input type="text" name="genre" id="genre"></div>
+    <div>Rating:<input type="text" name="rating" id="rating"></div>
+    <div>
+        <button type="button" id="addMovie">Add Movie</button>
+    </div>
+</form>
+<script>
+    $( "#addMovie" ).on("click" ,function( event ) {
+        var finishedMessage="{";
+        var message = $( "#theMovie" ).serializeArray();
+        $.each(message,function (i,field) {
+            finishedMessage+="\"" + field.name + "\":\"" + field.value + "\",";
+
+        });
+        finishedMessage =finishedMessage.substring(0,finishedMessage.length - 1) + "}";
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/movies");
+        oReq.setRequestHeader("Content-Type", "application/json");
+        oReq.send(finishedMessage);
+    });
+</script>
+</body>
+</html>

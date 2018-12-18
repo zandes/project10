@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+</head>
+<body>
+<h2>Movie genres</h2>
+<span id="stuff"></span>
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var myObj = JSON.parse(this.responseText);
+            var content = "<table>";
+            for (var property in myObj) {
+                if (myObj.hasOwnProperty(property)) {
+                    content += "<tr><td>" + myObj[property].genre + "</td><td>" + myObj[property].rating +
+                        "</td></tr>";
+                }
+            }
+            content += "</table>"
+            document.getElementById("stuff").innerHTML = content;
+        }
+    };
+    xmlhttp.open("GET", "/movies", true);
+    xmlhttp.send();
+</script>
+<h3>Movie</h3>
+<span id="movie"></span>
+<script>
+    var xmlhttp2 = new XMLHttpRequest();
+    xmlhttp2.onreadystatechange = function () {
+
+        if (this.readyState == 4 && this.status == 200) {
+            var myObj = JSON.parse(this.responseText);
+            var content = "<table>";
+            content += "<tr><td>" + myObj.genre + "</td><td>" + myObj.rating +
+                "</td></tr>";
+            content += "</table>"
+            document.getElementById("movie").innerHTML = content;
+        }
+    };
+    xmlhttp2.open("GET", "/movie/Horror", true);
+    xmlhttp2.send();
+</script>
+
+</body>
